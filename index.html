@@ -3,183 +3,553 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>溪頭聽濤園山莊 - 房型指南</title>
-    
-    <!-- 1. 載入 Tailwind CSS (美化介面) -->
+    <title>溪頭聽濤園山莊 - 互動式房型介紹</title>
+    <!-- 引入 Tailwind CSS 進行排版與設計 -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- 2. 載入 React & Babel (讓 HTML 能跑 React) -->
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-in { animation: fadeIn 0.3s ease-out forwards; }
+        /* 自訂一些簡單的過渡效果 */
+        .modal-enter { opacity: 0; pointer-events: none; }
+        .modal-enter-active { opacity: 1; pointer-events: auto; transition: opacity 0.3s ease-out; }
     </style>
 </head>
-<body class="bg-stone-100">
-    <div id="root"></div>
+<body class="bg-stone-100 text-stone-800 font-sans pb-12">
 
-    <script type="text/babel">
-        const { useState, useMemo, useRef } = React;
+    <!-- 頂部 Header -->
+    <div class="bg-emerald-900 text-stone-50 py-12 px-4 shadow-md text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 tracking-wider">溪頭聽濤園山莊</h1>
+        <p class="text-lg md:text-xl text-emerald-100 max-w-2xl mx-auto">
+            尋找專屬於您的山林秘境。為您提供最詳盡的房型指南與智慧推薦。
+        </p>
+    </div>
 
-        // --- 圖標元件 ---
-        const IconUsers = () => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        );
-        const IconBath = () => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="10" x2="8" y1="5" y2="7"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="7" x2="7" y1="19" y2="21"/><line x1="17" x2="17" y1="19" y2="21"/></svg>
-        );
-        const IconMaximize = () => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
-        );
-        const IconBed = () => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
-        );
+    <!-- 內容主體 -->
+    <div class="max-w-6xl mx-auto px-4 md:px-8 -mt-8 relative z-10">
+        
+        <!-- 篩選區塊 -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 border border-stone-200 mb-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4 gap-4">
+                <h2 class="text-xl font-bold text-emerald-800 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                    為您推薦最佳房型
+                </h2>
+                
+                <div class="flex flex-wrap gap-3 w-full md:w-auto mt-2 md:mt-0">
+                    <a href="https://lin.ee/s0mxLj8" target="_blank" rel="noopener noreferrer" class="bg-[#06C755] hover:bg-[#05b34c] text-white px-5 py-2 rounded-full font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                            <path d="M21.5 10.25c0-4.32-4.26-7.84-9.5-7.84-5.23 0-9.5 3.52-9.5 7.84 0 3.86 3.39 7.15 8.01 7.76.32.07.75.21.86.49.1.25.03.63 0 .89l-.21 1.25c-.05.28-.24 1.15 1.01.62 1.25-.53 6.78-3.99 8.24-6.38.7-1.16 1.09-2.38 1.09-3.63zm-13.88 2.21h-2.18c-.3 0-.54-.24-.54-.54v-3.8c0-.3.24-.54.54-.54h.55c.3 0 .54.24.54.54v3.25h1.09c.3 0 .54.24.54.54v.55c0 .3-.24.54-.54.54zm3.03-.54c0 .3-.24.54-.54.54h-.55c-.3 0-.54-.24-.54-.54v-3.8c0-.3.24-.54.54-.54h.55c.3 0 .54.24.54.54v3.8zm3.04-3.8c0-.3.24-.54.54-.54h1.64c.3 0 .54.24.54.54v.55c0 .3-.24.54-.54.54h-1.09v1.08h1.09c.3 0 .54.24.54.54v.55c0 .3-.24.54-.54.54h-1.64c-.3 0-.54-.24-.54-.54v-3.8zm-4.38 0c0-.3.24-.54.54-.54h.55c.3 0 .54.24.54.54v2.09l1.62-2.12c.07-.1.17-.18.28-.21h.7c.22 0 .34.25.21.43l-1.65 2.15 1.77 2.19c.12.15.02.37-.18.37h-.65c-.17 0-.32-.08-.41-.21l-1.57-2.02v1.68c0 .3-.24.54-.54.54h-.55c-.3 0-.54-.24-.54-.54v-3.8z"/>
+                        </svg>
+                        官方 LINE
+                    </a>
+                    <a href="https://www.bbnet.com.tw/tingtau/reserve/" target="_blank" rel="noopener noreferrer" class="bg-amber-500 hover:bg-amber-600 text-white px-5 py-2 rounded-full font-bold shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        線上訂房系統
+                    </a>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-semibold text-stone-600">入住人數</label>
+                    <select id="filterPeople" class="w-full bg-stone-50 border border-stone-200 text-stone-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 block p-3 outline-none transition-colors">
+                        <option value="All">不限人數</option>
+                        <option value="2">2 人</option>
+                        <option value="4">4 人</option>
+                        <option value="6">6 人</option>
+                        <option value="8">8 人</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-semibold text-stone-600">衛浴偏好</label>
+                    <select id="filterBath" class="w-full bg-stone-50 border border-stone-200 text-stone-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 block p-3 outline-none transition-colors">
+                        <option value="All">不限設施</option>
+                        <option value="淋浴">淋浴</option>
+                        <option value="浴缸">浴缸</option>
+                        <option value="豪華雙浴缸">豪華雙浴缸</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-semibold text-stone-600">房間床數</label>
+                    <select id="filterBeds" class="w-full bg-stone-50 border border-stone-200 text-stone-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 block p-3 outline-none transition-colors">
+                        <option value="All">不限床數</option>
+                        <option value="1">1 張床</option>
+                        <option value="2">2 張床</option>
+                        <option value="3">3 張床</option>
+                        <option value="4">4 張床</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
-        // --- 圖片輪播元件 ---
-        const ImageCarousel = ({ images, altText, className = "" }) => {
-            const [currentIndex, setCurrentIndex] = useState(0);
-            const touchStartX = useRef(null);
+        <!-- 搜尋結果標題 -->
+        <div class="mb-6 flex justify-between items-center">
+            <p class="text-stone-600 font-medium">
+                共為您找到 <span id="room-count" class="text-emerald-700 font-bold text-xl">0</span> 種推薦房型
+            </p>
+        </div>
 
-            const handleNext = (e) => {
-                e?.stopPropagation();
-                setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-            };
-            const handlePrev = (e) => {
-                e?.stopPropagation();
-                setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-            };
+        <!-- 房型列表容器 -->
+        <div id="room-list-container">
+            <!-- JavaScript 會動態將房型渲染在這裡 -->
+        </div>
 
-            const onTouchStart = (e) => { touchStartX.current = e.targetTouches[0].clientX; };
-            const onTouchEnd = (e) => {
-                const touchEndX = e.changedTouches[0].clientX;
-                if (touchStartX.current - touchEndX > 50) handleNext();
-                if (touchStartX.current - touchEndX < -50) handlePrev();
-            };
+        <!-- 住宿需知 -->
+        <div class="mt-12 bg-white rounded-2xl p-6 border border-stone-200 shadow-sm text-stone-600">
+            <h3 class="text-lg font-bold text-emerald-800 mb-3 border-b border-stone-100 pb-2 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                住宿需知與設備
+            </h3>
+            <ul class="space-y-2 list-disc list-inside">
+                <li><strong class="text-stone-700">房間基本設備：</strong>冰箱、冷暖氣、液晶電視、電熱水壺、除濕機</li>
+                <li><strong class="text-stone-700">加大雙人床(Queen Size)：</strong>6.0*6.2尺 (182*188公分)</li>
+            </ul>
+        </div>
+    </div>
 
-            return (
-                <div className={`relative overflow-hidden ${className}`} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-                    <img src={images[currentIndex]} alt={altText} className="w-full h-full object-cover transition-all duration-500" />
-                    <div className="absolute inset-0 flex items-center justify-between px-2 md:opacity-0 hover:opacity-100 transition-opacity">
-                        <button onClick={handlePrev} className="bg-black/30 text-white p-1 rounded-full backdrop-blur-sm">〈</button>
-                        <button onClick={handleNext} className="bg-black/30 text-white p-1 rounded-full backdrop-blur-sm">〉</button>
+    <!-- 底部 Footer -->
+    <footer class="bg-stone-800 text-stone-300 py-12 mt-16 w-full relative z-10 border-t-4 border-emerald-700">
+        <div class="max-w-6xl mx-auto px-4 md:px-8 flex flex-col md:flex-row justify-between gap-8">
+            <div class="flex flex-col gap-2">
+                <h4 class="text-2xl font-bold text-emerald-400 mb-2">聽濤園山莊</h4>
+                <p class="flex items-center gap-2">
+                    <span class="text-stone-400 font-bold w-4">T</span> 
+                    <a href="tel:049-2755677" class="hover:text-white transition-colors">049-2755677</a>
+                </p>
+                <p class="flex items-center gap-2">
+                    <span class="text-stone-400 font-bold w-4">F</span> 049-2754857
+                </p>
+                <p class="mt-2 text-stone-400">聽濤園山莊 統編 45295508</p>
+                <p class="text-stone-400">南投縣鹿谷鄉和雅村愛鄉路1之12號</p>
+            </div>
+            <div class="flex flex-col gap-3 md:items-end">
+                <h4 class="text-lg font-bold text-emerald-400 mb-1">Follow Us</h4>
+                <div class="flex flex-wrap gap-3 mb-2">
+                    <a href="https://www.google.com/maps/search/?api=1&query=聽濤園山莊" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-300 flex items-center gap-1 transition-colors bg-stone-700 hover:bg-stone-600 px-3 py-1.5 rounded-lg text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> 
+                        地圖
+                    </a>
+                    <a href="https://www.facebook.com/tingtau" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-300 flex items-center gap-1 transition-colors bg-stone-700 hover:bg-stone-600 px-3 py-1.5 rounded-lg text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg> 
+                        FB
+                    </a>
+                    <a href="http://www.tingtau.com.tw" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-300 flex items-center gap-1 transition-colors bg-stone-700 hover:bg-stone-600 px-3 py-1.5 rounded-lg text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg> 
+                        官網
+                    </a>
+                    <a href="mailto:tingtau@tingtau.com.tw" class="hover:text-emerald-300 flex items-center gap-1 transition-colors bg-stone-700 hover:bg-stone-600 px-3 py-1.5 rounded-lg text-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> 
+                        Mail
+                    </a>
+                </div>
+                <a href="mailto:tingtau@tingtau.com.tw" class="text-stone-400 hover:text-white transition-colors">tingtau@tingtau.com.tw</a>
+                <a href="http://www.tingtau.com.tw" target="_blank" rel="noopener noreferrer" class="text-stone-400 hover:text-white transition-colors">http://www.tingtau.com.tw</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 彈出視窗 Modal -->
+    <div id="room-modal" class="fixed inset-0 z-50 items-center justify-center bg-black/60 backdrop-blur-sm p-4 modal-enter hidden">
+        <div class="bg-white rounded-3xl w-full max-w-3xl overflow-hidden relative shadow-2xl flex flex-col max-h-[90vh]">
+            <button onclick="closeModal()" class="absolute top-4 right-4 z-20 bg-black/50 text-white rounded-full p-2 hover:bg-black/70 cursor-pointer transition-colors backdrop-blur-md">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+
+            <!-- 彈出視窗圖片區塊 -->
+            <div class="h-64 md:h-80 w-full relative flex-shrink-0" id="modal-carousel-container">
+                <!-- 動態注入 Carousel -->
+            </div>
+
+            <!-- 彈出視窗內容 -->
+            <div class="p-6 md:p-8 overflow-y-auto">
+                <h3 class="text-xl font-bold text-stone-800 mb-4 border-b border-stone-200 pb-2">客房說明</h3>
+                <p id="modal-desc" class="text-stone-600 leading-relaxed mb-8 text-lg"></p>
+
+                <h3 class="text-xl font-bold text-stone-800 mb-4 border-b border-stone-200 pb-2">詳細規格</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-stone-50 p-4 rounded-xl text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-emerald-600 mx-auto mb-2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        <p class="text-sm text-stone-500 mb-1">入住人數</p>
+                        <p id="modal-people" class="font-bold text-stone-800"></p>
                     </div>
-                    <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
-                        {images.map((_, i) => (
-                            <div key={i} className={`h-1 rounded-full transition-all ${i === currentIndex ? 'bg-white w-4' : 'bg-white/50 w-1'}`} />
-                        ))}
+                    <div class="bg-stone-50 p-4 rounded-xl text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-emerald-600 mx-auto mb-2"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="10" x2="8" y1="5" y2="7"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="7" x2="7" y1="19" y2="21"/><line x1="17" x2="17" y1="19" y2="21"/></svg>
+                        <p class="text-sm text-stone-500 mb-1">衛浴設備</p>
+                        <p id="modal-bath" class="font-bold text-stone-800"></p>
+                    </div>
+                    <div class="bg-stone-50 p-4 rounded-xl text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-emerald-600 mx-auto mb-2"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+                        <p class="text-sm text-stone-500 mb-1">房間坪數</p>
+                        <p id="modal-size" class="font-bold text-stone-800"></p>
+                    </div>
+                    <div class="bg-stone-50 p-4 rounded-xl text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-emerald-600 mx-auto mb-2"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+                        <p class="text-sm text-stone-500 mb-1">床鋪數量</p>
+                        <p id="modal-beds" class="font-bold text-stone-800"></p>
                     </div>
                 </div>
-            );
-        };
 
-        // --- 資料庫 ---
+                <div class="mt-4 bg-emerald-50 p-4 rounded-xl flex items-center gap-4">
+                    <div class="bg-emerald-200 p-3 rounded-full text-emerald-800 flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-sm text-emerald-700 font-semibold mb-1">床型配置</p>
+                        <p id="modal-bedType" class="font-bold text-emerald-900"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript 邏輯區塊 -->
+    <script>
+        // 房型資料庫
         const roomsData = [
-            { id: "r1", code: "B02、B03、B07", name: "春誦雙人套房", people: 2, bathType: "淋浴式衛浴", size: 4, beds: 1, bedType: "1張標準雙人床", description: "此房型空間較小，位於3F（無電梯），適合簡約旅行的旅客。", images: ["https://www.tingtau.com.tw/room/page01-4/ROOM0027.jpg", "https://www.tingtau.com.tw/room/page01-4/ROOM0028.jpg", "https://www.tingtau.com.tw/room/page01-4/ROOM0030.jpg"] },
-            { id: "r2", code: "B01、B05、B06", name: "夏弦雙人套房", people: 2, bathType: "坐式浴缸", size: 5, beds: 1, bedType: "1張標準雙人床", description: "配有舒適坐式浴缸，位於3F（無電梯），讓您放鬆山林疲憊。", images: ["https://www.tingtau.com.tw/room/page01-5/ROOM015.jpg", "https://www.tingtau.com.tw/room/page01-5/ROOM16.jpg", "https://www.tingtau.com.tw/room/page01-5/ROOM0028.jpg"] },
-            { id: "r4", code: "A06、A07、A08", name: "鳶尾雙人套房", people: 2, bathType: "景觀浴缸/電動簾", size: 8, beds: 1, bedType: "1張加大雙人床", description: "電動門簾設備，配備崁入式板岩或青花瓷浴缸，附專屬 RO 飲水機。", images: ["https://www.tingtau.com.tw/room/page01-0/ROOM001N.jpg", "https://www.tingtau.com.tw/room/page01-0/ROOM002N.jpg", "https://www.tingtau.com.tw/room/page01-0/ROOM003N.jpg"] },
-            { id: "r6", code: "A09、A10", name: "景觀四人房 1F", people: 4, bathType: "乾濕分離淋浴", size: 11, beds: 2, bedType: "2張雙人床", description: "含專屬陽台與和式座椅區，是家庭出遊的最佳選擇。", images: ["https://www.tingtau.com.tw/room/page02-1/ROOM009N.jpg", "https://www.tingtau.com.tw/room/page02-1/ROOM012.jpg"] },
-            { id: "r8", code: "301、303", name: "曉月四人房", people: 4, bathType: "豪華浴缸/雙洗手台", size: 13, beds: 2, bedType: "2張雙人床", description: "設有電視牆、獨立客廳及露臺，享受寬敞豪華的高質感空間。", images: ["https://www.tingtau.com.tw/room/page05/ROOM02.jpg", "https://www.tingtau.com.tw/room/page05/ROOM01.jpg", "https://www.tingtau.com.tw/room/page05/ROOM03.jpg"] },
-            { id: "r10", code: "302", name: "璽樓樓中樓 6人", people: 6, bathType: "1.5套衛浴", size: 22, beds: 3, bedType: "1張雙人床 + 2床墊", description: "樓中樓設計。一樓有客廳、球池、小廚房；二樓為睡眠空間，親子最愛。", images: ["https://www.tingtau.com.tw/room/page08/ROOM06.jpg", "https://www.tingtau.com.tw/room/page08/ROOM01.jpg", "https://www.tingtau.com.tw/room/page08/ROOM02.jpg"] },
-            { id: "r11", code: "A01", name: "獨棟8人木屋", people: 8, bathType: "淋浴式衛浴", size: 20, beds: 4, bedType: "4張雙人床", description: "超寬敞大客廳，配備小撞球檯，適合多個家庭或大團體聚會。", images: ["https://www.tingtau.com.tw/room/page04/ROOM0016.jpg", "https://www.tingtau.com.tw/room/page04/ROOM0017.jpg", "https://www.tingtau.com.tw/room/page04/ROOM0026.jpg"] }
+            {
+                id: "r1", code: "B02、B03、B07", name: "春誦雙人套房", people: 2, bathType: "淋浴式衛浴", size: 4, beds: 1, bedType: "1張標準雙人床",
+                description: "此房型空間較小，沒有電梯須爬樓梯至3F。",
+                images: [
+                    "https://www.tingtau.com.tw/room/page01-4/ROOM0027.jpg",
+                    "https://www.tingtau.com.tw/room/page01-4/ROOM0028.jpg",
+                    "https://www.tingtau.com.tw/room/page01-4/ROOM0030.jpg",
+                    "https://www.tingtau.com.tw/room/page01-4/ROOM0029.jpg"
+                ]
+            },
+            {
+                id: "r2", code: "B01、B05、B06", name: "夏弦雙人套房", people: 2, bathType: "坐式浴缸", size: 5, beds: 1, bedType: "1張標準雙人床",
+                description: "此房型空間較小，沒有電梯須爬樓梯至3F。",
+                images: [
+                    "https://www.tingtau.com.tw/room/page01-5/ROOM015.jpg",
+                    "https://www.tingtau.com.tw/room/page01-5/ROOM16.jpg",
+                    "https://www.tingtau.com.tw/room/page01-5/ROOM0028.jpg"
+                ]
+            },
+            {
+                id: "r3", code: "306、308 (竹子)、309 (月球)", name: "楓橋雙人套房", people: 2, bathType: "乾濕分離全套式衛浴", size: 10, beds: 1, bedType: "1張加大雙人床",
+                description: "三種裝潢風格。306是唯一一間可以拆兩張單床的房型。",
+                images: [
+                    "https://www.tingtau.com.tw/room/page01-1/ROOM013N.jpg",
+                    "https://www.tingtau.com.tw/room/page01-1/ROOM0024.jpg",
+                    "https://www.tingtau.com.tw/room/page01-1/ROOM014N.jpg",
+                    "https://www.tingtau.com.tw/room/page01-1/ROOMnew4b.jpg",
+                    "https://www.tingtau.com.tw/room/page01-1/ROOM014.jpg",
+                    "https://www.tingtau.com.tw/room/page01-1/ROOMnew6b.jpg"
+                ]
+            },
+            {
+                id: "r4", code: "A06、A07、A08", name: "鳶尾雙人套房", people: 2, bathType: "乾濕分離全套式衛浴", size: 8, beds: 1, bedType: "1張加大雙人床",
+                description: "電動門簾、窗簾。A06、A07崁入式板岩浴缸(龍頭浴缸)；A08青花瓷浴缸。房內RO水。",
+                images: [
+                    "https://www.tingtau.com.tw/room/page01-0/ROOM001N.jpg",
+                    "https://www.tingtau.com.tw/room/page01-0/ROOM002N.jpg",
+                    "https://www.tingtau.com.tw/room/page01-0/ROOM003N.jpg"
+                ]
+            },
+            {
+                id: "r5", code: "A03、A05、A13、A15、A16", name: "獨棟二人木屋", people: 2, bathType: "淋浴式衛浴", size: 7, beds: 2, bedType: "2張雙人床",
+                description: "綠色內牆(園區下方)A03、A05；白色內牆(園區上方) A13(粉)、A15(藍)、A16(黃)。A03.A05房內RO水。",
+                images: [
+                    "https://www.tingtau.com.tw/room/page02-2/ROOMnew1501.jpg",
+                    "https://www.tingtau.com.tw/room/page02-2/ROOMnew1502.jpg",
+                    "https://www.tingtau.com.tw/room/page02-2/ROOM008.jpg"
+                ]
+            },
+            {
+                id: "r6", code: "A09、A10", name: "景觀四人房 1F", people: 4, bathType: "乾濕分離淋浴式衛浴", size: 11, beds: 2, bedType: "2張雙人床",
+                description: "含陽台。和式座椅。",
+                images: [
+                    "https://www.tingtau.com.tw/room/page02-1/ROOM009N.jpg",
+                    "https://www.tingtau.com.tw/room/page02-1/ROOM012.jpg",
+                    "https://www.tingtau.com.tw/room/page02-1/ROOMtotobN.jpg"
+                ]
+            },
+            {
+                id: "r7", code: "A11、A12", name: "景觀四人房 2F", people: 4, bathType: "乾濕分離淋浴式衛浴", size: 11, beds: 2, bedType: "2張雙人床",
+                description: "含陽台。沙發座椅。屋頂挑高，空間感較1F大。",
+                images: [
+                    "https://www.tingtau.com.tw/room/page02-1/ROOM009N.jpg",
+                    "https://www.tingtau.com.tw/room/page02-1/ROOM008.jpg",
+                    "https://www.tingtau.com.tw/room/page02-1/ROOM012.jpg",
+                    "https://www.tingtau.com.tw/room/page02-1/ROOMtotobN.jpg"
+                ]
+            },
+            {
+                id: "r8", code: "301、303", name: "曉月四人房", people: 4, bathType: "乾濕分離全套式衛浴", size: 13, beds: 2, bedType: "2張雙人床",
+                description: "露臺。有電視牆將房間、客廳區分，獨立客廳及房間空間。崁入式板岩浴缸、雙洗手台。房內RO水。",
+                images: [
+                    "https://www.tingtau.com.tw/room/page05/ROOM02.jpg",
+                    "https://www.tingtau.com.tw/room/page05/ROOM01.jpg",
+                    "https://www.tingtau.com.tw/room/page05/ROOM03.jpg",
+                    "https://www.tingtau.com.tw/room/page05/ROOM04.jpg"
+                ]
+            },
+            {
+                id: "r9", code: "305、307", name: "邊城四人房", people: 4, bathType: "乾濕分離全套式衛浴", size: 13, beds: 2, bedType: "2張雙人床",
+                description: "室內室外雙浴缸(外面為崁入式板岩浴缸)。雙洗手台。房內RO水。",
+                images: [
+                    "https://www.tingtau.com.tw/room/page06/ROOM01.jpg",
+                    "https://www.tingtau.com.tw/room/page06/ROOM03.jpg",
+                    "https://www.tingtau.com.tw/room/page06/ROOM04.jpg"
+                ]
+            },
+            {
+                id: "r10", code: "302", name: "璽樓6人", people: 6, bathType: "全套式衛浴, 半套衛浴", size: 22, beds: 3, bedType: "1張雙人床 + 2張雙人乳膠床",
+                description: "樓中樓設計。一樓設有：乾濕分離全套式衛浴、客廳、露台、小廚房、餐桌、球池。二樓設有：半套衛浴(淋浴)。",
+                images: [
+                    "https://www.tingtau.com.tw/room/page08/ROOM06.jpg",
+                    "https://www.tingtau.com.tw/room/page08/ROOM01.jpg",
+                    "https://www.tingtau.com.tw/room/page08/ROOM02.jpg",
+                    "https://www.tingtau.com.tw/room/page08/ROOM03.jpg",
+                    "https://www.tingtau.com.tw/room/page08/ROOM04.jpg",
+                    "https://www.tingtau.com.tw/room/page08/ROOM05.jpg"
+                ]
+            },
+            {
+                id: "r11", code: "A01竹 (含A02梅)", name: "獨棟8人木屋", people: 8, bathType: "淋浴式衛浴", size: 20, beds: 4, bedType: "4張雙人床",
+                description: "大門進去是客廳，左右兩邊各一間四人房，房間各自獨立。小撞球檯(器具向櫃檯借)。房內RO水。",
+                images: [
+                    "https://www.tingtau.com.tw/room/page04/ROOM0016.jpg",
+                    "https://www.tingtau.com.tw/room/page04/ROOM0017.jpg",
+                    "https://www.tingtau.com.tw/room/page04/ROOM0026.jpg",
+                    "https://www.tingtau.com.tw/room/page04/ROOM006.jpg"
+                ]
+            }
         ];
 
-        // --- 主程式 ---
-        function App() {
-            const [filterPeople, setFilterPeople] = useState('All');
-            const [selectedRoom, setSelectedRoom] = useState(null);
+        // 圖示 SVG (用於 JS 動態產生 HTML)
+        const icons = {
+            users: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-emerald-600 flex-shrink-0"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+            bath: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-emerald-600 flex-shrink-0"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="10" x2="8" y1="5" y2="7"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="7" x2="7" y1="19" y2="21"/><line x1="17" x2="17" y1="19" y2="21"/></svg>`,
+            maximize: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-emerald-600 flex-shrink-0"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>`,
+            bed: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-emerald-600 flex-shrink-0"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>`,
+            chevronLeft: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><polyline points="15 18 9 12 15 6"></polyline></svg>`,
+            chevronRight: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><polyline points="9 18 15 12 9 6"></polyline></svg>`
+        };
 
-            const filteredRooms = useMemo(() => {
-                return roomsData.filter(r => filterPeople === 'All' || r.people === parseInt(filterPeople));
-            }, [filterPeople]);
+        // 輪播狀態管理
+        const carouselStates = {};
 
-            return (
-                <div className="min-h-screen pb-20 md:pb-10">
-                    {/* Header */}
-                    <div className="bg-emerald-900 text-white pt-10 pb-16 px-4 text-center">
-                        <h1 className="text-3xl md:text-5xl font-bold mb-3">溪頭聽濤園山莊</h1>
-                        <p className="opacity-80 text-sm">尋找您的森林秘境房型</p>
-                    </div>
+        // 初始化與綁定事件
+        document.addEventListener('DOMContentLoaded', () => {
+            renderRooms();
 
-                    <div className="max-w-6xl mx-auto px-4 -mt-8">
-                        {/* 篩選器 */}
-                        <div className="bg-white rounded-2xl shadow-xl p-4 border border-stone-200 mb-8">
-                            <label className="text-xs font-bold text-stone-500 block mb-2 text-center uppercase tracking-widest">入住人數篩選</label>
-                            <div className="flex justify-center gap-2 overflow-x-auto hide-scrollbar pb-2">
-                                {['All', '2', '4', '6', '8'].map(p => (
-                                    <button 
-                                        key={p}
-                                        onClick={() => setFilterPeople(p)}
-                                        className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${filterPeople === p ? 'bg-emerald-600 text-white shadow-lg' : 'bg-stone-100 text-stone-600'}`}
-                                    >
-                                        {p === 'All' ? '全部' : `${p}人`}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+            document.getElementById('filterPeople').addEventListener('change', renderRooms);
+            document.getElementById('filterBath').addEventListener('change', renderRooms);
+            document.getElementById('filterBeds').addEventListener('change', renderRooms);
+        });
 
-                        {/* 房型列表 */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {filteredRooms.map(room => (
-                                <div key={room.id} className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-stone-200 flex flex-col group cursor-pointer" onClick={() => setSelectedRoom(room)}>
-                                    <ImageCarousel images={room.images} altText={room.name} className="h-52 w-full" />
-                                    <div className="p-5 flex flex-col flex-grow">
-                                        <div className="text-[10px] font-bold text-emerald-600 mb-1">{room.code}</div>
-                                        <h3 className="text-xl font-bold text-stone-800 mb-4">{room.name}</h3>
-                                        <div className="flex gap-4 mb-4 text-stone-500">
-                                            <div className="flex items-center gap-1 text-xs"><IconUsers /> {room.people}人</div>
-                                            <div className="flex items-center gap-1 text-xs"><IconMaximize /> {room.size}坪</div>
-                                            <div className="flex items-center gap-1 text-xs"><IconBed /> {room.beds}床</div>
-                                        </div>
-                                        <button className="mt-auto w-full py-3 bg-stone-800 text-white rounded-xl font-bold text-sm">查看詳情</button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* 手機版底部導航 */}
-                    <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t p-3 flex gap-3 md:hidden z-40">
-                        <a href="https://lin.ee/s0mxLj8" target="_blank" className="flex-1 bg-[#06C755] text-white text-center py-3 rounded-2xl font-bold text-sm">LINE 諮詢</a>
-                        <a href="https://www.bbnet.com.tw/tingtau/reserve/" target="_blank" className="flex-1 bg-amber-500 text-white text-center py-3 rounded-2xl font-bold text-sm">立即訂房</a>
-                    </div>
-
-                    {/* 彈出詳情視窗 */}
-                    {selectedRoom && (
-                        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/70 backdrop-blur-sm p-0 md:p-4">
-                            <div className="bg-white w-full max-w-2xl rounded-t-3xl md:rounded-3xl overflow-hidden max-h-[90vh] flex flex-col animate-in">
-                                <div className="relative h-64 flex-shrink-0">
-                                    <ImageCarousel images={selectedRoom.images} altText={selectedRoom.name} className="h-full w-full" />
-                                    <button onClick={() => setSelectedRoom(null)} className="absolute top-4 right-4 bg-black/40 text-white w-8 h-8 rounded-full">✕</button>
-                                </div>
-                                <div className="p-6 overflow-y-auto">
-                                    <h2 className="text-2xl font-bold mb-4">{selectedRoom.name}</h2>
-                                    <p className="text-stone-600 mb-6 leading-relaxed">{selectedRoom.description}</p>
-                                    <div className="grid grid-cols-2 gap-4 mb-6">
-                                        <div className="bg-stone-50 p-3 rounded-xl flex flex-col items-center">
-                                            <span className="text-[10px] text-stone-400 font-bold">衛浴設施</span>
-                                            <span className="font-bold text-xs">{selectedRoom.bathType}</span>
-                                        </div>
-                                        <div className="bg-stone-50 p-3 rounded-xl flex flex-col items-center">
-                                            <span className="text-[10px] text-stone-400 font-bold">床型配置</span>
-                                            <span className="font-bold text-xs">{selectedRoom.bedType}</span>
-                                        </div>
-                                    </div>
-                                    <a href="https://www.bbnet.com.tw/tingtau/reserve/" target="_blank" className="block w-full bg-emerald-700 text-white text-center py-4 rounded-xl font-bold">前往訂房系統</a>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            );
+        function resetFilters() {
+            document.getElementById('filterPeople').value = 'All';
+            document.getElementById('filterBath').value = 'All';
+            document.getElementById('filterBeds').value = 'All';
+            renderRooms();
         }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        // 核心渲染邏輯
+        function renderRooms() {
+            const filterPeople = document.getElementById('filterPeople').value;
+            const filterBath = document.getElementById('filterBath').value;
+            const filterBeds = document.getElementById('filterBeds').value;
+
+            const filteredRooms = roomsData.filter(room => {
+                const matchPeople = filterPeople === 'All' || room.people === parseInt(filterPeople);
+                
+                let matchBath = true;
+                if (filterBath === '淋浴') {
+                    matchBath = room.bathType.includes('淋浴');
+                } else if (filterBath === '豪華雙浴缸') {
+                    matchBath = room.name === '邊城四人房';
+                } else if (filterBath === '浴缸') {
+                    matchBath = !room.bathType.includes('淋浴') && room.name !== '邊城四人房';
+                }
+                
+                const matchBeds = filterBeds === 'All' || room.beds === parseInt(filterBeds);
+                
+                return matchPeople && matchBath && matchBeds;
+            });
+
+            document.getElementById('room-count').innerText = filteredRooms.length;
+            const container = document.getElementById('room-list-container');
+
+            if (filteredRooms.length === 0) {
+                container.innerHTML = `
+                    <div class="bg-white rounded-2xl p-12 text-center shadow-sm border border-stone-200">
+                        <p class="text-stone-500 text-lg">找不到完全符合條件的房型，請嘗試放寬篩選條件！</p>
+                        <button onclick="resetFilters()" class="mt-4 bg-emerald-100 text-emerald-800 px-6 py-2 rounded-full font-semibold hover:bg-emerald-200 transition-colors">
+                            清除所有篩選
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">';
+            
+            filteredRooms.forEach(room => {
+                const carouselHtml = generateCarouselHTML(room.id, room.images, room.name, 'card');
+                
+                html += `
+                <div class="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-stone-200 flex flex-col group">
+                    <div class="relative h-56 w-full">
+                        ${carouselHtml}
+                        <div class="absolute top-4 left-4 z-10 bg-black/60 text-white text-xs font-bold px-3 py-1.5 rounded-full backdrop-blur-sm pointer-events-none">
+                            ${room.code}
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-2xl font-bold text-emerald-900 mb-4">${room.name}</h3>
+                        <div class="grid grid-cols-2 gap-y-3 gap-x-2 mb-6">
+                            <div class="flex items-center gap-2 text-stone-600 bg-stone-50 p-2 rounded-lg">
+                                ${icons.users} <span class="text-sm font-medium">${room.people} 人</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-stone-600 bg-stone-50 p-2 rounded-lg">
+                                ${icons.bath} <span class="text-sm font-medium truncate" title="${room.bathType}">${room.bathType}</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-stone-600 bg-stone-50 p-2 rounded-lg">
+                                ${icons.maximize} <span class="text-sm font-medium">約 ${room.size} 坪</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-stone-600 bg-stone-50 p-2 rounded-lg">
+                                ${icons.bed} <span class="text-sm font-medium">${room.beds} 張床</span>
+                            </div>
+                        </div>
+                        <p class="text-stone-500 text-sm line-clamp-2 mb-6 flex-grow">${room.description}</p>
+                        <button onclick="openModal('${room.id}')" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-3 rounded-xl transition-colors mt-auto">
+                            查看詳細介紹
+                        </button>
+                    </div>
+                </div>
+                `;
+            });
+            
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // 產生圖片輪播的 HTML 字串
+        function generateCarouselHTML(roomId, images, name, context) {
+            const carouselId = `carousel-${context}-${roomId}`;
+            carouselStates[carouselId] = 0; // 初始化索引
+
+            if (!images || images.length === 0) {
+                return `<div class="relative w-full h-full bg-stone-200 flex items-center justify-center"><span class="text-stone-400">無圖片</span></div>`;
+            }
+
+            if (images.length === 1) {
+                return `<img src="${images[0]}" alt="${name}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/800x500/166534/FFFFFF?text=聽濤園山莊'">`;
+            }
+
+            let dotsHtml = '';
+            images.forEach((_, idx) => {
+                const dotClass = idx === 0 ? 'bg-white scale-110' : 'bg-white/50';
+                dotsHtml += `<div id="dot-${carouselId}-${idx}" class="w-2 h-2 rounded-full transition-all duration-300 ${dotClass}"></div>`;
+            });
+
+            // 如果是 Modal 加上標題覆蓋
+            let overlayHtml = '';
+            if (context === 'modal') {
+                const room = roomsData.find(r => r.id === roomId);
+                overlayHtml = `
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 pointer-events-none">
+                    <span class="text-emerald-300 font-semibold tracking-wider text-sm mb-1 block">${room.code}</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white">${room.name}</h2>
+                </div>`;
+            }
+
+            return `
+            <div class="relative group w-full h-full">
+                <img id="img-${carouselId}" src="${images[0]}" alt="${name}" class="w-full h-full object-cover transition-opacity duration-300" onerror="this.src='https://placehold.co/800x500/166534/FFFFFF?text=聽濤園山莊'">
+                
+                <div class="absolute inset-0 flex items-center justify-between p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <button onclick="changeImage('${carouselId}', '${roomId}', -1, event)" class="bg-black/40 hover:bg-black/60 text-white p-1.5 rounded-full backdrop-blur-sm transition-colors" aria-label="上一張圖片">
+                        ${icons.chevronLeft}
+                    </button>
+                    <button onclick="changeImage('${carouselId}', '${roomId}', 1, event)" class="bg-black/40 hover:bg-black/60 text-white p-1.5 rounded-full backdrop-blur-sm transition-colors" aria-label="下一張圖片">
+                        ${icons.chevronRight}
+                    </button>
+                </div>
+
+                ${overlayHtml}
+
+                <div class="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+                    ${dotsHtml}
+                </div>
+            </div>
+            `;
+        }
+
+        // 切換輪播圖片邏輯
+        function changeImage(carouselId, roomId, direction, event) {
+            if(event) event.stopPropagation(); // 避免點擊箭頭觸發其他事件
+            
+            const room = roomsData.find(r => r.id === roomId);
+            const images = room.images;
+            
+            let currentIndex = carouselStates[carouselId];
+            currentIndex += direction;
+            
+            if (currentIndex < 0) currentIndex = images.length - 1;
+            if (currentIndex >= images.length) currentIndex = 0;
+            
+            carouselStates[carouselId] = currentIndex;
+            
+            // 更新圖片
+            const imgElement = document.getElementById(`img-${carouselId}`);
+            if(imgElement) imgElement.src = images[currentIndex];
+            
+            // 更新指示點 (Dots)
+            images.forEach((_, idx) => {
+                const dot = document.getElementById(`dot-${carouselId}-${idx}`);
+                if (dot) {
+                    if (idx === currentIndex) {
+                        dot.className = "w-2 h-2 rounded-full transition-all duration-300 bg-white scale-110";
+                    } else {
+                        dot.className = "w-2 h-2 rounded-full transition-all duration-300 bg-white/50";
+                    }
+                }
+            });
+        }
+
+        // 打開彈出視窗
+        function openModal(roomId) {
+            const room = roomsData.find(r => r.id === roomId);
+            if (!room) return;
+
+            // 填充內容
+            document.getElementById('modal-desc').innerText = room.description;
+            document.getElementById('modal-people').innerText = room.people + ' 人';
+            document.getElementById('modal-bath').innerText = room.bathType;
+            document.getElementById('modal-size').innerText = '約 ' + room.size + ' 坪';
+            document.getElementById('modal-beds').innerText = room.beds + ' 張床';
+            document.getElementById('modal-bedType').innerText = room.bedType;
+
+            // 渲染 Modal 的 Carousel
+            const modalCarouselContainer = document.getElementById('modal-carousel-container');
+            modalCarouselContainer.innerHTML = generateCarouselHTML(room.id, room.images, room.name, 'modal');
+
+            // 顯示 Modal
+            const modal = document.getElementById('room-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex', 'modal-enter-active');
+            
+            // 禁止背景捲動
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 關閉彈出視窗
+        function closeModal() {
+            const modal = document.getElementById('room-modal');
+            modal.classList.remove('modal-enter-active');
+            
+            // 等待動畫結束後隱藏
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+            
+            // 恢復背景捲動
+            document.body.style.overflow = '';
+        }
     </script>
 </body>
 </html>
