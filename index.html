@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>溪頭聽濤園山莊 - 房型指南</title>
+    
+    <!-- 1. 載入 Tailwind CSS (美化介面) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 2. 載入 React & Babel (讓 HTML 能跑 React) -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeIn 0.3s ease-out forwards; }
+    </style>
+</head>
+<body class="bg-stone-100">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo, useRef } = React;
+
+        // --- 圖標元件 ---
+        const IconUsers = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        );
+        const IconBath = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 6 6.5 3.5a1.5 1.5 0 0 0-1-.5C4.683 3 4 3.683 4 4.5V17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5"/><line x1="10" x2="8" y1="5" y2="7"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="7" x2="7" y1="19" y2="21"/><line x1="17" x2="17" y1="19" y2="21"/></svg>
+        );
+        const IconMaximize = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        );
+        const IconBed = () => (
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
+        );
+
+        // --- 圖片輪播元件 ---
+        const ImageCarousel = ({ images, altText, className = "" }) => {
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const touchStartX = useRef(null);
+
+            const handleNext = (e) => {
+                e?.stopPropagation();
+                setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+            };
+            const handlePrev = (e) => {
+                e?.stopPropagation();
+                setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+            };
+
+            const onTouchStart = (e) => { touchStartX.current = e.targetTouches[0].clientX; };
+            const onTouchEnd = (e) => {
+                const touchEndX = e.changedTouches[0].clientX;
+                if (touchStartX.current - touchEndX > 50) handleNext();
+                if (touchStartX.current - touchEndX < -50) handlePrev();
+            };
+
+            return (
+                <div className={`relative overflow-hidden ${className}`} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+                    <img src={images[currentIndex]} alt={altText} className="w-full h-full object-cover transition-all duration-500" />
+                    <div className="absolute inset-0 flex items-center justify-between px-2 md:opacity-0 hover:opacity-100 transition-opacity">
+                        <button onClick={handlePrev} className="bg-black/30 text-white p-1 rounded-full backdrop-blur-sm">〈</button>
+                        <button onClick={handleNext} className="bg-black/30 text-white p-1 rounded-full backdrop-blur-sm">〉</button>
+                    </div>
+                    <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
+                        {images.map((_, i) => (
+                            <div key={i} className={`h-1 rounded-full transition-all ${i === currentIndex ? 'bg-white w-4' : 'bg-white/50 w-1'}`} />
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        // --- 資料庫 ---
+        const roomsData = [
+            { id: "r1", code: "B02、B03、B07", name: "春誦雙人套房", people: 2, bathType: "淋浴式衛浴", size: 4, beds: 1, bedType: "1張標準雙人床", description: "此房型空間較小，位於3F（無電梯），適合簡約旅行的旅客。", images: ["https://www.tingtau.com.tw/room/page01-4/ROOM0027.jpg", "https://www.tingtau.com.tw/room/page01-4/ROOM0028.jpg", "https://www.tingtau.com.tw/room/page01-4/ROOM0030.jpg"] },
+            { id: "r2", code: "B01、B05、B06", name: "夏弦雙人套房", people: 2, bathType: "坐式浴缸", size: 5, beds: 1, bedType: "1張標準雙人床", description: "配有舒適坐式浴缸，位於3F（無電梯），讓您放鬆山林疲憊。", images: ["https://www.tingtau.com.tw/room/page01-5/ROOM015.jpg", "https://www.tingtau.com.tw/room/page01-5/ROOM16.jpg", "https://www.tingtau.com.tw/room/page01-5/ROOM0028.jpg"] },
+            { id: "r4", code: "A06、A07、A08", name: "鳶尾雙人套房", people: 2, bathType: "景觀浴缸/電動簾", size: 8, beds: 1, bedType: "1張加大雙人床", description: "電動門簾設備，配備崁入式板岩或青花瓷浴缸，附專屬 RO 飲水機。", images: ["https://www.tingtau.com.tw/room/page01-0/ROOM001N.jpg", "https://www.tingtau.com.tw/room/page01-0/ROOM002N.jpg", "https://www.tingtau.com.tw/room/page01-0/ROOM003N.jpg"] },
+            { id: "r6", code: "A09、A10", name: "景觀四人房 1F", people: 4, bathType: "乾濕分離淋浴", size: 11, beds: 2, bedType: "2張雙人床", description: "含專屬陽台與和式座椅區，是家庭出遊的最佳選擇。", images: ["https://www.tingtau.com.tw/room/page02-1/ROOM009N.jpg", "https://www.tingtau.com.tw/room/page02-1/ROOM012.jpg"] },
+            { id: "r8", code: "301、303", name: "曉月四人房", people: 4, bathType: "豪華浴缸/雙洗手台", size: 13, beds: 2, bedType: "2張雙人床", description: "設有電視牆、獨立客廳及露臺，享受寬敞豪華的高質感空間。", images: ["https://www.tingtau.com.tw/room/page05/ROOM02.jpg", "https://www.tingtau.com.tw/room/page05/ROOM01.jpg", "https://www.tingtau.com.tw/room/page05/ROOM03.jpg"] },
+            { id: "r10", code: "302", name: "璽樓樓中樓 6人", people: 6, bathType: "1.5套衛浴", size: 22, beds: 3, bedType: "1張雙人床 + 2床墊", description: "樓中樓設計。一樓有客廳、球池、小廚房；二樓為睡眠空間，親子最愛。", images: ["https://www.tingtau.com.tw/room/page08/ROOM06.jpg", "https://www.tingtau.com.tw/room/page08/ROOM01.jpg", "https://www.tingtau.com.tw/room/page08/ROOM02.jpg"] },
+            { id: "r11", code: "A01", name: "獨棟8人木屋", people: 8, bathType: "淋浴式衛浴", size: 20, beds: 4, bedType: "4張雙人床", description: "超寬敞大客廳，配備小撞球檯，適合多個家庭或大團體聚會。", images: ["https://www.tingtau.com.tw/room/page04/ROOM0016.jpg", "https://www.tingtau.com.tw/room/page04/ROOM0017.jpg", "https://www.tingtau.com.tw/room/page04/ROOM0026.jpg"] }
+        ];
+
+        // --- 主程式 ---
+        function App() {
+            const [filterPeople, setFilterPeople] = useState('All');
+            const [selectedRoom, setSelectedRoom] = useState(null);
+
+            const filteredRooms = useMemo(() => {
+                return roomsData.filter(r => filterPeople === 'All' || r.people === parseInt(filterPeople));
+            }, [filterPeople]);
+
+            return (
+                <div className="min-h-screen pb-20 md:pb-10">
+                    {/* Header */}
+                    <div className="bg-emerald-900 text-white pt-10 pb-16 px-4 text-center">
+                        <h1 className="text-3xl md:text-5xl font-bold mb-3">溪頭聽濤園山莊</h1>
+                        <p className="opacity-80 text-sm">尋找您的森林秘境房型</p>
+                    </div>
+
+                    <div className="max-w-6xl mx-auto px-4 -mt-8">
+                        {/* 篩選器 */}
+                        <div className="bg-white rounded-2xl shadow-xl p-4 border border-stone-200 mb-8">
+                            <label className="text-xs font-bold text-stone-500 block mb-2 text-center uppercase tracking-widest">入住人數篩選</label>
+                            <div className="flex justify-center gap-2 overflow-x-auto hide-scrollbar pb-2">
+                                {['All', '2', '4', '6', '8'].map(p => (
+                                    <button 
+                                        key={p}
+                                        onClick={() => setFilterPeople(p)}
+                                        className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${filterPeople === p ? 'bg-emerald-600 text-white shadow-lg' : 'bg-stone-100 text-stone-600'}`}
+                                    >
+                                        {p === 'All' ? '全部' : `${p}人`}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* 房型列表 */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {filteredRooms.map(room => (
+                                <div key={room.id} className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-stone-200 flex flex-col group cursor-pointer" onClick={() => setSelectedRoom(room)}>
+                                    <ImageCarousel images={room.images} altText={room.name} className="h-52 w-full" />
+                                    <div className="p-5 flex flex-col flex-grow">
+                                        <div className="text-[10px] font-bold text-emerald-600 mb-1">{room.code}</div>
+                                        <h3 className="text-xl font-bold text-stone-800 mb-4">{room.name}</h3>
+                                        <div className="flex gap-4 mb-4 text-stone-500">
+                                            <div className="flex items-center gap-1 text-xs"><IconUsers /> {room.people}人</div>
+                                            <div className="flex items-center gap-1 text-xs"><IconMaximize /> {room.size}坪</div>
+                                            <div className="flex items-center gap-1 text-xs"><IconBed /> {room.beds}床</div>
+                                        </div>
+                                        <button className="mt-auto w-full py-3 bg-stone-800 text-white rounded-xl font-bold text-sm">查看詳情</button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* 手機版底部導航 */}
+                    <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t p-3 flex gap-3 md:hidden z-40">
+                        <a href="https://lin.ee/s0mxLj8" target="_blank" className="flex-1 bg-[#06C755] text-white text-center py-3 rounded-2xl font-bold text-sm">LINE 諮詢</a>
+                        <a href="https://www.bbnet.com.tw/tingtau/reserve/" target="_blank" className="flex-1 bg-amber-500 text-white text-center py-3 rounded-2xl font-bold text-sm">立即訂房</a>
+                    </div>
+
+                    {/* 彈出詳情視窗 */}
+                    {selectedRoom && (
+                        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/70 backdrop-blur-sm p-0 md:p-4">
+                            <div className="bg-white w-full max-w-2xl rounded-t-3xl md:rounded-3xl overflow-hidden max-h-[90vh] flex flex-col animate-in">
+                                <div className="relative h-64 flex-shrink-0">
+                                    <ImageCarousel images={selectedRoom.images} altText={selectedRoom.name} className="h-full w-full" />
+                                    <button onClick={() => setSelectedRoom(null)} className="absolute top-4 right-4 bg-black/40 text-white w-8 h-8 rounded-full">✕</button>
+                                </div>
+                                <div className="p-6 overflow-y-auto">
+                                    <h2 className="text-2xl font-bold mb-4">{selectedRoom.name}</h2>
+                                    <p className="text-stone-600 mb-6 leading-relaxed">{selectedRoom.description}</p>
+                                    <div className="grid grid-cols-2 gap-4 mb-6">
+                                        <div className="bg-stone-50 p-3 rounded-xl flex flex-col items-center">
+                                            <span className="text-[10px] text-stone-400 font-bold">衛浴設施</span>
+                                            <span className="font-bold text-xs">{selectedRoom.bathType}</span>
+                                        </div>
+                                        <div className="bg-stone-50 p-3 rounded-xl flex flex-col items-center">
+                                            <span className="text-[10px] text-stone-400 font-bold">床型配置</span>
+                                            <span className="font-bold text-xs">{selectedRoom.bedType}</span>
+                                        </div>
+                                    </div>
+                                    <a href="https://www.bbnet.com.tw/tingtau/reserve/" target="_blank" className="block w-full bg-emerald-700 text-white text-center py-4 rounded-xl font-bold">前往訂房系統</a>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
