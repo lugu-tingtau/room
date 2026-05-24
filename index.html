@@ -72,10 +72,11 @@
                     <label class="text-sm font-semibold text-stone-600">房間床數</label>
                     <select id="filterBeds" class="w-full bg-stone-50 border border-stone-200 text-stone-800 rounded-xl focus:ring-emerald-500 focus:border-emerald-500 block p-3 outline-none transition-colors">
                         <option value="All">不限床數</option>
-                        <option value="1">1 張床</option>
-                        <option value="2">2 張床</option>
-                        <option value="3">3 張床</option>
-                        <option value="4">4 張床</option>
+                        <option value="1張標準雙人床">1張標準雙人床</option>
+                        <option value="1張加大雙人床">1張加大雙人床</option>
+                        <option value="2張標準雙人床">2張標準雙人床</option>
+                        <option value="3張標準雙人床">3張標準雙人床</option>
+                        <option value="4張標準雙人床">4張標準雙人床</option>
                     </select>
                 </div>
             </div>
@@ -206,26 +207,29 @@
         // 房型資料庫
         const roomsData = [
             {
-                id: "r1", code: "B02、B03、B07", name: "春誦雙人套房", people: 2, bathType: "淋浴式衛浴", size: 4, beds: 1, bedType: "1張標準雙人床",
+                id: "r1", code: "B02、B03、B07", name: "春誦雙人套房", people: 2, bathType: "淋浴式衛浴", size: 4, beds: "1張標準雙人床", bedType: "1張標準雙人床",
                 description: "此房型空間較小，沒有電梯須爬樓梯至3F。",
                 images: [
+                    "https://www.tingtau.com.tw/room/page01-4/ROOM0027.jpg",
                     "https://www.tingtau.com.tw/room/page01-4/ROOM0028.jpg",
                     "https://www.tingtau.com.tw/room/page01-4/ROOM0030.jpg",
                     "https://www.tingtau.com.tw/room/page01-4/ROOM0029.jpg"
                 ]
             },
             {
-                id: "r2", code: "B01、B05、B06", name: "夏弦雙人套房", people: 2, bathType: "坐式浴缸", size: 5, beds: 1, bedType: "1張標準雙人床",
+                id: "r2", code: "B01、B05、B06", name: "夏弦雙人套房", people: 2, bathType: "坐式浴缸", size: 5, beds: "1張標準雙人床", bedType: "1張標準雙人床",
                 description: "此房型空間較小，沒有電梯須爬樓梯至3F。",
                 images: [
+                    "https://www.tingtau.com.tw/room/page01-5/ROOM015.jpg",
                     "https://www.tingtau.com.tw/room/page01-5/ROOM16.jpg",
                     "https://www.tingtau.com.tw/room/page01-5/ROOM0028.jpg"
                 ]
             },
             {
-                id: "r3", code: "306、308 (竹子)、309 (月球)", name: "楓橋雙人套房", people: 2, bathType: "乾濕分離全套式衛浴", size: 10, beds: 1, bedType: "1張加大雙人床",
+                id: "r3", code: "306、308 (竹子)、309 (月球)", name: "楓橋雙人套房", people: 2, bathType: "乾濕分離全套式衛浴", size: 10, beds: "1張加大雙人床", bedType: "1張加大雙人床",
                 description: "三種裝潢風格。306是唯一一間可以拆兩張單床的房型。",
                 images: [
+                    "https://www.tingtau.com.tw/room/page01-1/ROOM013N.jpg",
                     "https://www.tingtau.com.tw/room/page01-1/ROOM0024.jpg",
                     "https://www.tingtau.com.tw/room/page01-1/ROOM014N.jpg",
                     "https://www.tingtau.com.tw/room/page01-1/ROOMnew4b.jpg",
@@ -234,31 +238,34 @@
                 ]
             },
             {
-                id: "r4", code: "A06、A07、A08", name: "鳶尾雙人套房", people: 2, bathType: "乾濕分離全套式衛浴", size: 8, beds: 1, bedType: "1張加大雙人床",
+                id: "r4", code: "A06、A07、A08", name: "鳶尾雙人套房", people: 2, bathType: "乾濕分離全套式衛浴", size: 8, beds: "1張加大雙人床", bedType: "1張加大雙人床",
                 description: "電動門簾、窗簾。A06、A07崁入式板岩浴缸(龍頭浴缸)；A08青花瓷浴缸。房內RO水。",
                 images: [
+                    "https://www.tingtau.com.tw/room/page01-0/ROOM001N.jpg",
                     "https://www.tingtau.com.tw/room/page01-0/ROOM002N.jpg",
                     "https://www.tingtau.com.tw/room/page01-0/ROOM003N.jpg"
                 ]
             },
             {
-                id: "r5", code: "A03、A05、A13、A15、A16", name: "獨棟二人木屋", people: 2, bathType: "淋浴式衛浴", size: 7, beds: 2, bedType: "2張雙人床",
+                id: "r5", code: "A03、A05、A13、A15、A16", name: "獨棟二人木屋", people: 2, bathType: "淋浴式衛浴", size: 7, beds: "2張標準雙人床", bedType: "2張雙人床",
                 description: "綠色內牆(園區下方)A03、A05；白色內牆(園區上方) A13(粉)、A15(藍)、A16(黃)。A03.A05房內RO水。",
                 images: [
+                    "https://www.tingtau.com.tw/room/page02-2/ROOMnew1501.jpg",
                     "https://www.tingtau.com.tw/room/page02-2/ROOMnew1502.jpg",
                     "https://www.tingtau.com.tw/room/page02-2/ROOM008.jpg"
                 ]
             },
             {
-                id: "r6", code: "A09、A10", name: "景觀四人房 1F", people: 4, bathType: "乾濕分離淋浴式衛浴", size: 11, beds: 2, bedType: "2張雙人床",
+                id: "r6", code: "A09、A10", name: "景觀四人房 1F", people: 4, bathType: "乾濕分離淋浴式衛浴", size: 11, beds: "2張標準雙人床", bedType: "2張雙人床",
                 description: "含陽台。和式座椅。",
                 images: [
+                    "https://www.tingtau.com.tw/room/page02-1/ROOM009N.jpg",
                     "https://www.tingtau.com.tw/room/page02-1/ROOM012.jpg",
                     "https://www.tingtau.com.tw/room/page02-1/ROOMtotobN.jpg"
                 ]
             },
             {
-                id: "r7", code: "A11、A12", name: "景觀四人房 2F", people: 4, bathType: "乾濕分離淋浴式衛浴", size: 11, beds: 2, bedType: "2張雙人床",
+                id: "r7", code: "A11、A12", name: "景觀四人房 2F", people: 4, bathType: "乾濕分離淋浴式衛浴", size: 11, beds: "2張標準雙人床", bedType: "2張雙人床",
                 description: "含陽台。沙發座椅。屋頂挑高，空間感較1F大。",
                 images: [
                     "https://www.tingtau.com.tw/room/page02-1/ROOM008.jpg",
@@ -267,26 +274,29 @@
                 ]
             },
             {
-                id: "r8", code: "301、303", name: "曉月四人房", people: 4, bathType: "乾濕分離全套式衛浴", size: 13, beds: 2, bedType: "2張雙人床",
+                id: "r8", code: "301、303", name: "曉月四人房", people: 4, bathType: "乾濕分離全套式衛浴", size: 13, beds: "2張標準雙人床", bedType: "2張雙人床",
                 description: "露臺。有電視牆將房間、客廳區分，獨立客廳及房間空間。崁入式板岩浴缸、雙洗手台。房內RO水。",
                 images: [
+                    "https://www.tingtau.com.tw/room/page05/ROOM02.jpg",
                     "https://www.tingtau.com.tw/room/page05/ROOM01.jpg",
                     "https://www.tingtau.com.tw/room/page05/ROOM03.jpg",
                     "https://www.tingtau.com.tw/room/page05/ROOM04.jpg"
                 ]
             },
             {
-                id: "r9", code: "305、307", name: "邊城四人房", people: 4, bathType: "乾濕分離全套式衛浴", size: 13, beds: 2, bedType: "2張雙人床",
+                id: "r9", code: "305、307", name: "邊城四人房", people: 4, bathType: "乾濕分離全套式衛浴", size: 13, beds: "2張標準雙人床", bedType: "2張雙人床",
                 description: "室內室外雙浴缸(外面為崁入式板岩浴缸)。雙洗手台。房內RO水。",
                 images: [
+                    "https://www.tingtau.com.tw/room/page06/ROOM01.jpg",
                     "https://www.tingtau.com.tw/room/page06/ROOM03.jpg",
                     "https://www.tingtau.com.tw/room/page06/ROOM04.jpg"
                 ]
             },
             {
-                id: "r10", code: "302", name: "璽樓6人", people: 6, bathType: "全套式衛浴, 半套衛浴", size: 22, beds: 3, bedType: "1張雙人床 + 2張雙人乳膠床",
+                id: "r10", code: "302", name: "璽樓6人", people: 6, bathType: "全套式衛浴, 半套衛浴", size: 22, beds: "3張標準雙人床", bedType: "1張雙人床 + 2張雙人乳膠床",
                 description: "樓中樓設計。一樓設有：乾濕分離全套式衛浴、客廳、露台、小廚房、餐桌、球池。二樓設有：半套衛浴(淋浴)。",
                 images: [
+                    "https://www.tingtau.com.tw/room/page08/ROOM06.jpg",
                     "https://www.tingtau.com.tw/room/page08/ROOM01.jpg",
                     "https://www.tingtau.com.tw/room/page08/ROOM02.jpg",
                     "https://www.tingtau.com.tw/room/page08/ROOM03.jpg",
@@ -295,9 +305,10 @@
                 ]
             },
             {
-                id: "r11", code: "A01竹 (含A02梅)", name: "獨棟8人木屋", people: 8, bathType: "淋浴式衛浴", size: 20, beds: 4, bedType: "4張雙人床",
+                id: "r11", code: "A01竹 (含A02梅)", name: "獨棟8人木屋", people: 8, bathType: "淋浴式衛浴", size: 20, beds: "4張標準雙人床", bedType: "4張雙人床",
                 description: "大門進去是客廳，左右兩邊各一間四人房，房間各自獨立。小撞球檯(器具向櫃檯借)。房內RO水。",
                 images: [
+                    "https://www.tingtau.com.tw/room/page04/ROOM0016.jpg",
                     "https://www.tingtau.com.tw/room/page04/ROOM0017.jpg",
                     "https://www.tingtau.com.tw/room/page04/ROOM0026.jpg",
                     "https://www.tingtau.com.tw/room/page04/ROOM006.jpg"
@@ -347,11 +358,10 @@
                 if (filterBath === '淋浴') {
                     matchBath = room.bathType.includes('淋浴');
                 } else if (filterBath === '浴缸') {
-                    // 只要「不是淋浴」的都視為浴缸 (這會將包含原先的豪華雙浴缸等所有非純淋浴房型歸類至此)
                     matchBath = !room.bathType.includes('淋浴');
                 }
                 
-                const matchBeds = filterBeds === 'All' || room.beds === parseInt(filterBeds);
+                const matchBeds = filterBeds === 'All' || room.beds === filterBeds;
                 
                 return matchPeople && matchBath && matchBeds;
             });
@@ -397,7 +407,7 @@
                                 ${icons.maximize} <span class="text-sm font-medium">約 ${room.size} 坪</span>
                             </div>
                             <div class="flex items-center gap-2 text-stone-600 bg-stone-50 p-2 rounded-lg">
-                                ${icons.bed} <span class="text-sm font-medium">${room.beds} 張床</span>
+                                ${icons.bed} <span class="text-sm font-medium">${room.beds}</span>
                             </div>
                         </div>
                         <p class="text-stone-500 text-sm line-clamp-2 mb-6 flex-grow">${room.description}</p>
@@ -507,7 +517,7 @@
             document.getElementById('modal-people').innerText = room.people + ' 人';
             document.getElementById('modal-bath').innerText = room.bathType;
             document.getElementById('modal-size').innerText = '約 ' + room.size + ' 坪';
-            document.getElementById('modal-beds').innerText = room.beds + ' 張床';
+            document.getElementById('modal-beds').innerText = room.beds;
             document.getElementById('modal-bedType').innerText = room.bedType;
 
             // 渲染 Modal 的 Carousel
